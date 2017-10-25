@@ -25,7 +25,9 @@ func openCommand() string {
 func main() {
 	const pageImage = "/tmp/ame.png"
 
-	driver := agouti.ChromeDriver()
+	driver := agouti.ChromeDriver(
+		agouti.ChromeOptions("args", []string{"--headless", "--disable-gpu"}),
+	)
 	if err := driver.Start(); err != nil {
 		log.Fatalf("Failed to start driver:%v", err)
 	}
@@ -36,12 +38,12 @@ func main() {
 		log.Fatalf("Failed to open page:%v", err)
 	}
 
-	// Wait for display
-	time.Sleep(2 * time.Millisecond)
-
 	if err := page.Navigate("http://tokyo-ame.jwa.or.jp/"); err != nil {
 		log.Fatalf("Failed to navigate:%v", err)
 	}
+
+	// Wait for display
+	time.Sleep(3 * time.Millisecond)
 
 	page.Screenshot(pageImage)
 
